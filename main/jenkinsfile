@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+    
+    tools {
+        maven 'maven3'
+       
+    }
+
+    stages {
+        stage('Git checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/jaiswaladi246/Boardgame.git'
+            }
+        }
+         stage('Test') {
+             when {
+                 changeset "test.txt"
+             }
+             
+            steps {
+               sh "mvn test"
+            }
+        }
+        stage('Build') {
+            steps {
+                sh "mvn package"
+            }
+        }
+        
+
+    }
+}
